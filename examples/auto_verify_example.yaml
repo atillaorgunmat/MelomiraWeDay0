@@ -1,0 +1,10 @@
+auto_verify:
+  pack_id: P-FND-0001
+  result: PASS
+  checks:
+    bank_integrity: PASS
+    no_skip: PASS
+    typed_cross_links: PASS
+    graph_completeness: PASS
+    system_scenario: PASS
+  notes: "Ready to apply."

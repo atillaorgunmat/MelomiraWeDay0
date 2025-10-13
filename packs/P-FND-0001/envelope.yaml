@@ -1,0 +1,12 @@
+pack_envelope:
+  pack_id: P-FND-0001
+  bank_ref:           { path: docs/FOUNDATIONS/QUESTION_BANK.md, sha: "" }
+  auto_response_ref:  { path: logs/auto/P-FND-0001_auto_response.yml, sha: "" }
+  selection_ref:      { path: logs/select/P-FND-0001_selection.yml, sha: "" }
+  pro_request_ref:    { path: logs/guidance/P-FND-0001_pro_request.yml, sha: "" }
+  auto_verify_ref:    { path: logs/auto/P-FND-0001_auto_verify.yml, sha: "" }
+  last_apply_ref:     { path: logs/apply/P-FND-0001_apply.yml, sha: "" }
+  graph_ref:          { path: graph/questions.yaml, sha: "" }
+  policy:
+    repo_read_policy: STRICT
+    scaffold_policy: READ_FIRST

@@ -1,0 +1,9 @@
+selection_decision:
+  pack_id: P-FND-0001
+  chosen:
+    - id: UNK-unit-of-value-00
+      tier: WHAT
+      vertical_parents: [UNK-beneficiary-change-00]
+      horizontals_typed:
+        - { with: UNK-interfaces-00, type: risks_with }
+  rationale: "High leverage and clean dependencies."

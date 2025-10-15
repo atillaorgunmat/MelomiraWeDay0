@@ -1,1 +1,16 @@
-{}
+UNK-BIZ-00:         { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-BIZ-00.yaml"],         dependents: ["UNK-BIZ-01"] }
+UNK-BIZ-01:         { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-BIZ-01.yaml"],         dependents: [] }
+
+UNK-LGL-00:         { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-LGL-00.yaml"],         dependents: ["UNK-LGL-01","UNK-LGL-REDLIST-01"] }
+UNK-LGL-01:         { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-LGL-01.yaml"],         dependents: ["UNK-LGL-REDLIST-01"] }
+UNK-LGL-REDLIST-01: { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-LGL-REDLIST-01.yaml"], dependents: [] }
+
+UNK-CHN-00:         { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-CHN-00.yaml"],         dependents: ["UNK-CHN-01"] }
+UNK-CHN-01:         { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-CHN-01.yaml"],         dependents: ["UNK-ICP-01"] }
+
+UNK-OPS-00:         { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-OPS-00.yaml"],         dependents: ["UNK-OPS-02","UNK-OPS-CAP-01"] }
+UNK-OPS-02:         { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-OPS-02.yaml"],         dependents: ["UNK-CHN-01","UNK-OPS-CAP-01"] }
+UNK-OPS-CAP-01:     { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-OPS-CAP-01.yaml"],     dependents: [] }
+
+UNK-ICP-00:         { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-ICP-00.yaml"],         dependents: ["UNK-ICP-01"] }
+UNK-ICP-01:         { files: ["docs/FOUNDATIONS/QUESTION_BANK.md","graph/questions.yaml","q/UNK-ICP-01.yaml"],         dependents: [] }

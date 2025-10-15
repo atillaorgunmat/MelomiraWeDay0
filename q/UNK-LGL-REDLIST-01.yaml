@@ -1,0 +1,7 @@
+id: UNK-LGL-REDLIST-01
+title: "Hard exclusions & sensitive themes (Red‑List)"
+status: FROZEN
+tier: WHAT
+depends_on: [UNK-LGL-00]
+cross_links_typed:
+  - { with: UNK-LGL-01, type: depends }

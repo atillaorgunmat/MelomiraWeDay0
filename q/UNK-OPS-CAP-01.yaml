@@ -1,0 +1,7 @@
+id: UNK-OPS-CAP-01
+title: "Capacity gate ops"
+status: FROZEN
+tier: WHAT
+depends_on: [UNK-OPS-00]
+cross_links_typed:
+  - { with: UNK-OPS-02, type: shares_var_with }

@@ -1,0 +1,7 @@
+id: UNK-CHN-01
+title: "Baseline cadence & mirroring"
+status: FROZEN
+tier: WHAT
+depends_on: [UNK-CHN-00]
+cross_links_typed:
+  - { with: UNK-OPS-02, type: informs }

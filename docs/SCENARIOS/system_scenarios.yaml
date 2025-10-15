@@ -1,0 +1,17 @@
+scenarios:
+  - id: SCN-P-FND-0001-001
+    pack: P-FND-0001
+    title: "First‑cycle sponsor flow"
+    narrative: >
+      A new sponsor brief targets the initial ICP (UNK-ICP-01) → Legal baseline and
+      red‑list check (UNK-LGL-01, UNK-LGL-REDLIST-01) → Schedule baseline cadence (UNK-CHN-01) →
+      Run the first‑cycle workflow with capacity gate (UNK-OPS-02, UNK-OPS-CAP-01) →
+      Measure against the chosen KPI (UNK-BIZ-01).
+    steps:
+      - UNK-ICP-01
+      - UNK-LGL-01
+      - UNK-LGL-REDLIST-01
+      - UNK-CHN-01
+      - UNK-OPS-02
+      - UNK-OPS-CAP-01
+      - UNK-BIZ-01

@@ -1,0 +1,11 @@
+# Risks Register (pack=P-FND-0001)
+- id: R-001
+  risk: "Capacity gating blocks content throughput"
+  severity: "medium"
+  mitigation: "UNK-OPS-CAP-01 gating; add capacity_slots shared var"
+  owner: "ops"
+- id: R-002
+  risk: "Legal red-list conflicts with planned channels"
+  severity: "high"
+  mitigation: "UNK-LGL-REDLIST-01 informs UNK-CHN-01 path"
+  owner: "legal"

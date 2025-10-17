@@ -1,17 +1,22 @@
-# Operator Quick Commands (Connector‑Limited)
+# ops_README.md — Operator Handbook (v4.3)
 
-## Verify base has the seed
-git fetch origin
-git ls-tree -r --name-only origin/pack/<PACK_ID> | grep '^q/.*\.yaml$' | wc -l
+## Golden rules
+- One route per message; FORM = one fenced YAML.
+- AUTO is the only live repo reader (Single‑Reader). Confirm state with AUTO‑READ.
 
-## Get blob SHA for Bank (use in q_patch.bank_version)
-git ls-tree origin/pack/<PACK_ID> docs/FOUNDATIONS/QUESTION_BANK.md | awk '{print $3}'
+## Typical loop
+1) AUTO‑READ → snapshot.
+2) SELECT‑ORG (FREE) → pick FROZEN target(s) + edges.
+3) GUIDANCE (FORM) → `pro_request` (add `q_patch` if editing q/*); Echo‑Forward to AUTO.
+4) AUTO‑VERIFY → if bank_integrity FAIL, re‑emit with expected_sha.
+5) AUTO‑APPLY → connector‑limited: manual PR; then AUTO‑READ confirm.
 
-## Re-seed on a head branch and open PR
-git checkout -B seed/<PACK_ID>-v1 origin/pack/<PACK_ID>
-unzip -o ~/Downloads/<seed_zip>.zip -d .
-git add -A docs/FOUNDATIONS docs/TRACE docs/SCENARIOS graph q
-git commit -m "<PACK_ID>: seed FROZEN nucleus (Option-A, verified)"
-git push -u origin seed/<PACK_ID>-v1
+## Quick commands
+- Bank blob SHA:
+  `git ls-tree origin/pack/<PACK_ID> docs/FOUNDATIONS/QUESTION_BANK.md | awk '{print $3}'`
+- Verify diff before PR:
+  `git diff --name-status origin/pack/<PACK_ID>..origin/<head-branch>`
 
-# Open PR in UI with base=pack/<PACK_ID>, head=seed/<PACK_ID>-v1, then merge.
+## Lint hints
+- q‑files: use `cross_links` (untyped) and include `shared_vars` for WHAT/HOW.
+- graph/questions.yaml: keep typed edges (shares_var_with|informs|depends|conflicts|risks_with).

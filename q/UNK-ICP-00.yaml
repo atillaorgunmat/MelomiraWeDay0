@@ -1,6 +1,4 @@
 id: UNK-ICP-00
-title: "Stakeholder first"
-status: FROZEN
 tier: WHY
-depends_on: []
-cross_links_typed: []
+status: FROZEN
+cross_links: []

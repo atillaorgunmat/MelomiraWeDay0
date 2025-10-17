@@ -1,6 +1,9 @@
 id: UNK-LGL-01
-title: "Default disclosure/consent/music‑IP policy"
-status: FROZEN
 tier: WHAT
-depends_on: [UNK-LGL-00]
-cross_links_typed: []
+depends_on:
+- UNK-LGL-00
+shared_vars:
+- legal_baseline_policy
+cross_links:
+- UNK-LGL-REDLIST-01
+status: FROZEN

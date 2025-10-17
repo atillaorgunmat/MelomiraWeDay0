@@ -1,7 +1,11 @@
 id: UNK-CHN-01
-title: "Baseline cadence & mirroring"
-status: FROZEN
 tier: WHAT
-depends_on: [UNK-CHN-00]
-cross_links_typed:
-  - { with: UNK-OPS-02, type: informs }
+depends_on:
+- UNK-CHN-00
+shared_vars:
+- cadence_plan
+- icp_profiles
+cross_links:
+- UNK-OPS-02
+- UNK-ICP-01
+status: FROZEN

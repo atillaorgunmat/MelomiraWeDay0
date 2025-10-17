@@ -1,6 +1,9 @@
-# PROJECT_INSTRUCTIONS.md — v4.2 (Solo Variant) + Connector‑Limited Ops Addendum
+# PROJECT_INSTRUCTIONS.md — v4.3 (Solo Variant) + Connector‑Limited Ops Addendum
 
 Each FORM turn must output **one fenced YAML** with the exact top key shown below.
+Where examples differ from prior versions, v4.3 is canonical.
+
+---
 
 ## clarifier_round (FREE → GUIDANCE‑ORG)
 ```yaml
@@ -64,6 +67,10 @@ selection_decision:
 ```
 
 ## pro_request (FORM → GUIDANCE pre‑PRO) — may embed q_patch
+> **v4.3 NOTE:** q‑files must use **untyped** `cross_links: ["<adjacent id>", ...]`.  
+> Typed link semantics live exclusively in `graph/questions.yaml`.  
+> WHAT and HOW q‑files must include `shared_vars: [...]` when the graph indicates use.
+
 ```yaml
 pro_request:
   pack_id: <PACK_ID>
@@ -71,7 +78,7 @@ pro_request:
                "System Scenario", "Coupling Watchlist", "Not‑Doing", "CCR‑Lite"]
   require:
     shared_vars: true
-    typed_cross_links: true
+    typed_cross_links: true   # verifies typed links exist in graph/questions.yaml
     system_scenario: true
   q_patch:
     bank_version: "<sha of QUESTION_BANK.md>"
@@ -83,8 +90,7 @@ pro_request:
           tier: WHAT
           depends_on: [ "<WHY id>" ]
           shared_vars: [ value_object ]
-          cross_links_typed:
-            - { with: "<adjacent id>", type: risks_with }
+          cross_links: [ "<adjacent id>", "..." ]
           status: FROZEN
 ```
 
@@ -96,7 +102,7 @@ auto_verify:
   checks:
     bank_integrity: PASS|FAIL
     no_skip: PASS|FAIL
-    typed_cross_links: PASS|FAIL
+    typed_cross_links: PASS|FAIL     # checks graph/questions.yaml typed edges
     graph_completeness: PASS|FAIL
     system_scenario: PASS|FAIL
   notes: "short"
@@ -132,6 +138,7 @@ pro_eval:
   5) Optional: `AUTO‑READ` to confirm inventory/gaps/share_list/relations/trace.
 
 - **Sequencing**: one route per message; FORM turns output **exactly one fenced YAML**.
+- **ASCII hyphens are canonical** for pack ids and branches (avoid Unicode look‑alikes).
 
 ---
 
@@ -169,19 +176,8 @@ ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑READ (inventory,gaps,share_list
 
 ---
 
-# Operator Route Macros (paste‑ready)
+# Appendix — Q‑file schema expectations (lint‑friendly)
 
-- To AUTO‑READ:  
-  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑READ (inventory,gaps,share_list,h/v relations,trace_map; no scaffold)`
-
-- To GUIDANCE (pre‑PRO):  
-  `ROUTE → GUIDANCE (FORM) for <PACK_ID>: pre‑PRO pro_request (may include q_patch)`
-
-- To AUTO‑VERIFY:  
-  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑VERIFY`
-
-- To AUTO‑APPLY:  
-  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑APPLY`
-
-- To SELECT‑ORG:  
-  `ROUTE → SELECT‑ORG (FREE) for <PACK_ID>`
+- **WHY**: `id`, `tier: WHY`, `status`, (optional) `cross_links`.
+- **WHAT/HOW**: `id`, `tier: WHAT|HOW`, `depends_on`, **`shared_vars` required**, `cross_links` (untyped adjacency), `status`.
+- **Typed link semantics** (`informs|depends|conflicts|risks_with|shares_var_with`) live only in `graph/questions.yaml`.

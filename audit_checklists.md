@@ -1,36 +1,32 @@
-# audit_checklists.md — minimal operator audits
+# audit_checklists.md — minimal operator audits (v4.3)
 
-## L0 (GUIDANCE-ORG)
-- Clarifier grammar: abstraction-0; no numbers/names/choice verbs.
-- Freeze only when coverage ≥ 0.70 and no OPEN. If not, request a one-round Correction Snapshot.
+## L0 (GUIDANCE‑ORG)
+- Clarifier grammar: abstraction‑0; no numbers/names/choice verbs.
+- Freeze only when coverage ≥ 0.70 and no OPEN.
 - Output: one fenced `clarifier_round` → `question_nomination` → `bank_ops` (tables only).
 
-## AUTO-READ
-- One fenced `auto_response` only.
-- Must include: repo_inventory, gaps, share_list, h_relations, v_relations, trace_map.
-- `scaffold_needed:false` unless Day-0 gaps demand it.
+## AUTO‑READ
+- One fenced `auto_response` only (inventory, gaps, share_list, h_relations, v_relations, trace_map).
 
-## SELECT-ORG
+## SELECT‑ORG
 - One fenced `selection_decision`; IDs must be FROZEN in Bank.
-- Include vertical parents + typed horizontals.
+- Include vertical parents + typed horizontals (allowed: shares_var_with|informs|depends|conflicts|risks_with).
 
 ## GUIDANCE (pre‑PRO)
 - One fenced `pro_request`.
 - May embed `q_patch` (only FROZEN items). Ensure graph present and typed links used.
 - Include acceptance gates and require flags.
 
-## AUTO-VERIFY
-- One fenced `auto_verify: PASS/FAIL` with checks: bank_integrity, no_skip, typed_links, graph_completeness, system_scenario.
+## Q‑file checks (lint‑friendly)
+- WHAT/HOW q‑files include `shared_vars: [...]` if graph references them.
+- All q‑files use untyped `cross_links: [ "<adjacent id>", ... ]` (not `cross_links_typed`).
+- Typed link semantics live only in `graph/questions.yaml`.
 
-## AUTO-VERIFY (lint expectations)
+## AUTO‑VERIFY
+- One fenced `auto_verify: PASS/FAIL` with checks: bank_integrity, no_skip, typed_cross_links (in graph), graph_completeness, system_scenario.
 
-- If bank_integrity: FAIL, AUTO must include expected_sha for QUESTION_BANK.md in notes. Operator re-emits pro_request with that SHA and re-runs VERIFY.
+## AUTO‑APPLY
+- One fenced `auto_apply`; envelope updated; share bundle emitted (or manual PR in connector‑limited).
 
-- trace_map_present: files must include docs/FOUNDATIONS/QUESTION_BANK.md, graph/questions.yaml, and q/<id>.yaml for each ID; dependents must include vertical children and typed-linked peers.
-Operator rule: One route per message; do not run VERIFY and READ in the same message.
-
-## AUTO-APPLY
-- One fenced `auto_apply`; envelope updated; share bundle emitted.
-
-## PRO-EVAL (advisory)
-- Non-writing evaluation; proposes options and new questions (route those back to GUIDANCE-ORG).
+## PRO‑EVAL (advisory)
+- Non‑writing evaluation; proposes options/new questions (route back to GUIDANCE‑ORG).

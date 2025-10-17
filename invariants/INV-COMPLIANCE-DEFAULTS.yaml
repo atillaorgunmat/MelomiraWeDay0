@@ -1,0 +1,10 @@
+id: INV-COMPLIANCE-DEFAULTS
+owner: legal
+last_validated: 2025-10-17
+rules:
+  - id: INV-001
+    label: "Default disclosure required"
+    policy: "Show default disclosure banner for new interactions."
+  - id: INV-002
+    label: "Music/IP clearance"
+    policy: "Content using music/images must have rights clearance noted."

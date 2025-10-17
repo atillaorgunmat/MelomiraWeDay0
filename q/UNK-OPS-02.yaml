@@ -1,6 +1,11 @@
 id: UNK-OPS-02
-title: "First‑cycle workflow stages/tools/gates"
-status: FROZEN
 tier: WHAT
-depends_on: [UNK-OPS-00]
-cross_links_typed: []
+depends_on:
+- UNK-OPS-00
+shared_vars:
+- capacity_slots
+- cadence_plan
+cross_links:
+- UNK-CHN-01
+- UNK-OPS-CAP-01
+status: FROZEN

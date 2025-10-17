@@ -1,6 +1,8 @@
 id: UNK-BIZ-01
-title: "Choose KPI + baseline/target"
-status: FROZEN
 tier: WHAT
-depends_on: [UNK-BIZ-00]
-cross_links_typed: []
+depends_on:
+- UNK-BIZ-00
+shared_vars:
+- kpi_primary
+cross_links: []
+status: FROZEN

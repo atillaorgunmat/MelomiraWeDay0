@@ -1,22 +1,31 @@
-# ops_README.md — Operator Handbook (v4.3)
+# ops_README.md — Operator Quick Commands (v4.4)
 
-## Golden rules
-- One route per message; FORM = one fenced YAML.
-- AUTO is the only live repo reader (Single‑Reader). Confirm state with AUTO‑READ.
+## Update docs/tools via short‑lived PR (zsh‑safe)
+```bash
+git fetch origin
+git checkout -B docs/v4.4 origin/pack/<PACK_ID>
+unzip -o "$HOME/Downloads/chatgpt-project-v4.4-updates.zip" -d .
+git add -A PROJECT_INSTRUCTIONS.md GOVERNANCE.solo.md audit_checklists.md route_macros.md ops_README.md tools scripts
+git commit -m "v4.4: chain‑centric docs + search‑index tools"
+git push -u origin docs/v4.4
+git diff --name-status origin/pack/<PACK_ID>..origin/docs/v4.4
+# Open PR: base=pack/<PACK_ID>, head=docs/v4.4
+```
 
-## Typical loop
-1) AUTO‑READ → snapshot.
-2) SELECT‑ORG (FREE) → pick FROZEN target(s) + edges.
-3) GUIDANCE (FORM) → `pro_request` (add `q_patch` if editing q/*); Echo‑Forward to AUTO.
-4) AUTO‑VERIFY → if bank_integrity FAIL, re‑emit with expected_sha.
-5) AUTO‑APPLY → connector‑limited: manual PR; then AUTO‑READ confirm.
+## Build/refresh the search index
+```bash
+python3 tools/build_question_index.py --qdir q --graph graph/questions.yaml --out dist
+git add -A dist/search_index.json dist/question_matrix.csv
+git commit -m "dist: refresh question search index (v4.4)"
+git push
+```
 
-## Quick commands
-- Bank blob SHA:
-  `git ls-tree origin/pack/<PACK_ID> docs/FOUNDATIONS/QUESTION_BANK.md | awk '{print $3}'`
-- Verify diff before PR:
-  `git diff --name-status origin/pack/<PACK_ID>..origin/<head-branch>`
+## Compute bank_version (blob SHA)
+```bash
+git fetch origin
+git ls-tree origin/pack/<PACK_ID> docs/FOUNDATIONS/QUESTION_BANK.md | awk '{print $3}'
+```
 
-## Lint hints
-- q‑files: use `cross_links` (untyped) and include `shared_vars` for WHAT/HOW.
-- graph/questions.yaml: keep typed edges (shares_var_with|informs|depends|conflicts|risks_with).
+## Avoid zsh comment gotchas
+- Do not paste inline `#` comments on the same line as commands.
+- Quote globs like `"q/*.yaml"` when staging files.

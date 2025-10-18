@@ -1,11 +1,14 @@
-# Assumptions Register (pack=P-FND-0001)
-- id: A-001
-  statement: "We can extract a baseline cadence within 2 sprints"
-  test: "Pilot with Channels + Ops"
-  owner: "ops"
-  status: "open"
-- id: A-002
-  statement: "Primary KPI can be measured weekly"
-  test: "Define KPI in UNK-BIZ-01 and run 2-week measurement"
-  owner: "biz"
-  status: "open"
+# docs/ASSUMPTIONS/register.yaml — v4.4
+items:
+  - id: A-001
+    text: "Agencies can co-sell sponsor integrations efficiently."
+    status: open      # open|test|passed|failed
+    test: "Pilot 3 agency briefs; measure conversion and cycle time."
+    owner: "TBD"
+    due: "TBD"
+  - id: A-002
+    text: "Music-led microstories differentiate vs stock."
+    status: open
+    test: "A/B creative review with 5 prospects; collect preference."
+    owner: "TBD"
+    due: "TBD"

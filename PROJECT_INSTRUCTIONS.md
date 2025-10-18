@@ -1,14 +1,17 @@
-# PROJECT_INSTRUCTIONS.md — v4.3 (Solo Variant) + Connector‑Limited Ops Addendum
+# PROJECT_INSTRUCTIONS.md — v4.4 (Chain‑Centric Solo Variant) + Connector‑Limited Ops Addendum
 
-Each FORM turn must output **one fenced YAML** with the exact top key shown below.
-Where examples differ from prior versions, v4.3 is canonical.
+> Purpose: make the **question chain** the primary artifact. Keep Option‑A governance, but allow **pack_id to be optional** on FREE forms; **AUTO forms still require pack_id** (Single‑Reader routes to a specific repo pack).
+
+## FORM output rule (unchanged)
+Each FORM turn must output **one fenced YAML** with the exact top key shown below. The payloads must match the schemas here.
 
 ---
 
 ## clarifier_round (FREE → GUIDANCE‑ORG)
 ```yaml
 clarifier_round:
-  pack_id: <PACK_ID>
+  chain_id: <CHAIN>         # required for FREE forms; a human‑readable namespace for the question chain
+  pack_id: <PACK_ID>        # optional; carry through when you already know the repo pack
   level: L0
   review_set: [ "...meta docs only..." ]
   context_horizon: [ { id: "...", why: "..." } ]
@@ -22,7 +25,8 @@ clarifier_round:
 ## question_nomination (FREE → GUIDANCE‑ORG)
 ```yaml
 question_nomination:
-  pack_id: <PACK_ID>
+  chain_id: <CHAIN>
+  pack_id: <PACK_ID>     # optional
   level: L0
   review_set: [ ... ]
   candidates: [ { id: "...", title: "...", type: WHY|WHAT|HOW, coverage: 0..1,
@@ -34,13 +38,50 @@ question_nomination:
 ## bank_ops (FREE → GUIDANCE‑ORG)
 ```yaml
 bank_ops:
-  pack_id: <PACK_ID>
+  chain_id: <CHAIN>
   rows_md: |
     | id | title | tier | domain | status | depends_on | source | micro‑WWH |
     |---|---|---|---|---|---|---|---|
 ```
 
-## auto_response (FORM → AUTO‑READ)
+## selection_decision (FREE → SELECT‑ORG)
+```yaml
+selection_decision:
+  chain_id: <CHAIN>
+  chosen:
+    - id: "<FROZEN bank id>"
+      tier: WHY|WHAT|HOW
+      vertical_parents: ["<id>", "..."]
+      horizontals_typed: [ { with: "<id>", type: informs|depends|conflicts|risks_with|shares_var_with } ]
+  rationale: "one line"
+```
+
+## pro_request (FORM → GUIDANCE pre‑PRO) — may embed q_patch
+```yaml
+pro_request:
+  chain_id: <CHAIN>
+  pack_id: <PACK_ID>   # required when this will later go to AUTO
+  acceptance: ["Simplicity Gate", "Assumption Challenge", "UX Backcast", "Prototype Gate",
+               "System Scenario", "Coupling Watchlist", "Not‑Doing", "CCR‑Lite"]
+  require:
+    shared_vars: true
+    typed_cross_links: true
+    system_scenario: true
+  q_patch:
+    bank_version: "<sha of QUESTION_BANK.md>"   # Git blob SHA
+    items:
+      - id: "<FROZEN id>"
+        path: "q/<id>.yaml"
+        body: |
+          id: <id>
+          tier: WHAT
+          depends_on: ["<direct WHY id>"]       # No‑Jump rule: only direct parent(s)
+          shared_vars: [ value_object ]         # REQUIRED for WHAT/HOW
+          cross_links: [ "<peer id>", "..." ]   # untyped in q/*; types live in graph
+          status: FROZEN
+```
+
+## auto_response (FORM → AUTO‑READ)   # pack_id is required for AUTO forms
 ```yaml
 auto_response:
   pack_id: <PACK_ID>
@@ -54,47 +95,7 @@ auto_response:
   scaffold_needed: false
 ```
 
-## selection_decision (FREE → SELECT‑ORG)
-```yaml
-selection_decision:
-  pack_id: <PACK_ID>
-  chosen:
-    - id: "<FROZEN bank id>"
-      tier: WHY|WHAT|HOW
-      vertical_parents: ["<id>", "..."]
-      horizontals_typed: [ { with: "<id>", type: informs|depends|conflicts|risks_with|shares_var_with } ]
-  rationale: "one line"
-```
-
-## pro_request (FORM → GUIDANCE pre‑PRO) — may embed q_patch
-> **v4.3 NOTE:** q‑files must use **untyped** `cross_links: ["<adjacent id>", ...]`.  
-> Typed link semantics live exclusively in `graph/questions.yaml`.  
-> WHAT and HOW q‑files must include `shared_vars: [...]` when the graph indicates use.
-
-```yaml
-pro_request:
-  pack_id: <PACK_ID>
-  acceptance: ["Simplicity Gate", "Assumption Challenge", "UX Backcast", "Prototype Gate",
-               "System Scenario", "Coupling Watchlist", "Not‑Doing", "CCR‑Lite"]
-  require:
-    shared_vars: true
-    typed_cross_links: true   # verifies typed links exist in graph/questions.yaml
-    system_scenario: true
-  q_patch:
-    bank_version: "<sha of QUESTION_BANK.md>"
-    items:
-      - id: "<FROZEN id>"
-        path: "q/<id>.yaml"
-        body: |
-          id: <id>
-          tier: WHAT
-          depends_on: [ "<WHY id>" ]
-          shared_vars: [ value_object ]
-          cross_links: [ "<adjacent id>", "..." ]
-          status: FROZEN
-```
-
-## auto_verify (FORM → AUTO)
+## auto_verify (FORM → AUTO)   # pack_id required
 ```yaml
 auto_verify:
   pack_id: <PACK_ID>
@@ -102,13 +103,13 @@ auto_verify:
   checks:
     bank_integrity: PASS|FAIL
     no_skip: PASS|FAIL
-    typed_cross_links: PASS|FAIL     # checks graph/questions.yaml typed edges
+    typed_cross_links: PASS|FAIL
     graph_completeness: PASS|FAIL
     system_scenario: PASS|FAIL
   notes: "short"
 ```
 
-## auto_apply (FORM → AUTO)
+## auto_apply (FORM → AUTO)   # pack_id required
 ```yaml
 auto_apply:
   pack_id: <PACK_ID>
@@ -120,7 +121,8 @@ auto_apply:
 ## pro_eval (ADVISORY)
 ```yaml
 pro_eval:
-  pack_id: <PACK_ID>
+  chain_id: <CHAIN>
+  pack_id: <PACK_ID>  # optional
   evaluated_ids: ["<id>"]
   options_considered: ["short notes"]
   new_questions: ["<id or title>"]
@@ -128,56 +130,48 @@ pro_eval:
 
 ---
 
+# Question Spec (q/*.yaml) — v4.4
+- `id`: string
+- `title`: interrogative, concise
+- `tier`: WHY|WHAT|HOW
+- `domain`: short tag (e.g., BIZ, LGL, OPS, ICP)
+- `status`: candidate|FROZEN|committed
+- `depends_on`: [ "<direct parent id>", ... ]  # No‑Jump: only direct parents
+- `shared_vars`: [name, ...]  # REQUIRED for WHAT/HOW
+- `cross_links`: ["<peer id>", ...]            # untyped here; typed semantics in graph
+- `assumptions`: [ { id, text, status: open|test|passed|failed, test: "how to learn" } ]
+- `risks`:       [ { id, text, mitigation } ]
+- `context_refs`: [ "docs/... or url", ... ]
+- `notes`: "free text"
+
+# Graph Spec (graph/questions.yaml) — unchanged intent
+- Nodes for each `id` with tier/status.
+- `edges.vertical`: `{ from: <child>, to: <direct parent>, rel: depends_on }` only.
+- `edges.horizontals_typed`: allowed = `shares_var_with|informs|depends|conflicts|risks_with`.
+- `shared_vars`: map each var → list of question ids.
+- `system_scenarios`: each path crosses ≥2 branches.
+
+# Search Index (new)
+- Run `tools/build_question_index.py` to emit:
+  - `dist/search_index.json` (id,title,tier,domain,status,tokens,depends_on,horizontals,shared_vars,assumptions,risks,context_refs)
+  - `dist/question_matrix.csv` (wide matrix for spreadsheet review)
+
+---
+
 # Handoff & Thread‑Isolation Discipline (Option‑A)
-
 - **Isolated threads (Echo‑Forward)**  
-  1) In **GUIDANCE** thread: emit the `pro_request` (with any `q_patch`).  
-  2) In **AUTO** thread: paste that same YAML **verbatim**.  
-  3) Send the route line: `ROUTE → AUTO (FORM) … task=AUTO‑VERIFY`.  
-  4) If PASS, send: `ROUTE → AUTO (FORM) … task=AUTO‑APPLY`.  
-  5) Optional: `AUTO‑READ` to confirm inventory/gaps/share_list/relations/trace.
-
-- **Sequencing**: one route per message; FORM turns output **exactly one fenced YAML**.
-- **ASCII hyphens are canonical** for pack ids and branches (avoid Unicode look‑alikes).
+  1) In **GUIDANCE**: emit `pro_request` (with any `q_patch`).  
+  2) In **AUTO**: paste the same YAML **verbatim** and route VERIFY.  
+  3) If PASS: route APPLY.  
+  4) Optional: AUTO‑READ to confirm.
+- **Sequencing**: one route per message; FORM turns output exactly one fenced YAML.
 
 ---
 
 # Connector‑Limited Ops Addendum (Pattern B)
-
-If AUTO cannot write to GitHub, the Operator may perform **mechanical apply via PR** while preserving **Single‑Reader = AUTO**:
-
-## B1) Compute `bank_version` (Git blob SHA)
-```bash
-git fetch origin
-git ls-tree origin/pack/<PACK_ID> docs/FOUNDATIONS/QUESTION_BANK.md | awk '{print $3}'
-# Use this 40‑hex value in q_patch.bank_version
-```
-
-## B2) Prepare the seed on a head branch
-```bash
-git checkout -B seed/<PACK_ID>-v1 origin/pack/<PACK_ID>
-unzip -o ~/Downloads/<seed_zip>.zip -d .
-git add -A docs/FOUNDATIONS docs/TRACE docs/SCENARIOS graph q
-git commit -m "<PACK_ID>: seed FROZEN nucleus (Option‑A, verified)"
-git push -u origin seed/<PACK_ID>-v1
-```
-
-## B3) Open PR (head → base) and merge
-- base: `pack/<PACK_ID>`
-- head: `seed/<PACK_ID>-v1`
-
-## B4) Confirm via Single‑Reader
-```
-ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑READ (inventory,gaps,share_list,h/v relations,trace_map; no scaffold)
-```
-
-## B5) Continue governed loop
-- **SELECT‑ORG** → **GUIDANCE: pro_request** → **AUTO‑VERIFY** → **AUTO‑APPLY**.
-
----
-
-# Appendix — Q‑file schema expectations (lint‑friendly)
-
-- **WHY**: `id`, `tier: WHY`, `status`, (optional) `cross_links`.
-- **WHAT/HOW**: `id`, `tier: WHAT|HOW`, `depends_on`, **`shared_vars` required**, `cross_links` (untyped adjacency), `status`.
-- **Typed link semantics** (`informs|depends|conflicts|risks_with|shares_var_with`) live only in `graph/questions.yaml`.
+If AUTO cannot write to GitHub, the Operator performs **mechanical apply via PR** (Single‑Reader invariant holds):
+1) Compute `bank_version` (Git blob SHA).
+2) Prepare head branch; unzip seed; stage; commit; push.
+3) Open PR (head→base) and merge.
+4) Confirm via AUTO‑READ.
+5) Continue the governed loop.

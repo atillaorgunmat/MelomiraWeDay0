@@ -1,22 +1,17 @@
-# route_macros.md — v4.5
+# route_macros.md — v4.5.1 (Paste‑ready)
 
-- To AUTO‑READ:
-  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑READ (inventory,gaps,share_list,h/v relations,trace_map; no scaffold)`
+- AUTO‑READ
+  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO-READ (inventory,gaps,share_list,h/v relations,trace_map; no scaffold)`
 
-- To GUIDANCE (pre‑PRO):
+- GUIDANCE — ask for nucleus options (no numeric quota)
+  `ROUTE → GUIDANCE (FREE) for <PACK_ID>: task=NUCLEUS-OPTIONS (chain_id=<CHAIN_ID>)`
+
+- SELECT‑ORG — choose next frozen targets (supports parallel nuclei)
+  `ROUTE → SELECT-ORG (FREE) for <PACK_ID>`
+
+- GUIDANCE — pre‑PRO freeze request (may embed q_patch)
   `ROUTE → GUIDANCE (FORM) for <PACK_ID>: pre‑PRO pro_request (may include q_patch)`
 
-- To AUTO‑VERIFY:
-  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑VERIFY`
-
-- To AUTO‑APPLY:
-  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑APPLY`
-
-- To SELECT‑ORG:
-  `ROUTE → SELECT‑ORG (FREE) for <PACK_ID>`
-
-- To update Assumption Register:
-  `ROUTE → GUIDANCE (FREE) for <CHAIN_ID>: assumption_register_ops (commit=true)`
-
-- To log a decision:
-  `ROUTE → PRO (FREE) for <CHAIN_ID>: decision_log_ops (commit=true)`
+- AUTO — verify then apply
+  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO-VERIFY`
+  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO-APPLY`

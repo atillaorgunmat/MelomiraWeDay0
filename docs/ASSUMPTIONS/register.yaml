@@ -1,14 +1,8 @@
-# docs/ASSUMPTIONS/register.yaml — v4.4
-items:
-  - id: A-001
-    text: "Agencies can co-sell sponsor integrations efficiently."
-    status: open      # open|test|passed|failed
-    test: "Pilot 3 agency briefs; measure conversion and cycle time."
-    owner: "TBD"
-    due: "TBD"
-  - id: A-002
-    text: "Music-led microstories differentiate vs stock."
-    status: open
-    test: "A/B creative review with 5 prospects; collect preference."
-    owner: "TBD"
-    due: "TBD"
+# docs/ASSUMPTIONS/register.yaml
+# Seed or extend via assumption_register_ops
+- id: A-EXAMPLE-000
+  text: "Example assumption text"
+  status: open
+  source: GUIDANCE-ORG
+  related_ids: []
+  test: "Describe how it will be tested"

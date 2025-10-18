@@ -1,32 +1,28 @@
-# audit_checklists.md — minimal operator audits (v4.3)
+# audit_checklists.md — operator audits (v4.4)
 
-## L0 (GUIDANCE‑ORG)
-- Clarifier grammar: abstraction‑0; no numbers/names/choice verbs.
-- Freeze only when coverage ≥ 0.70 and no OPEN.
-- Output: one fenced `clarifier_round` → `question_nomination` → `bank_ops` (tables only).
+## L0 (GUIDANCE‑ORG) — Clarifier Round
+- Abstraction only; coverage ≥ 0.70 to freeze. No OPEN clarifiers.
+- Output order enforced: `clarifier_round` → `question_nomination` → `bank_ops`.
+- `chain_id` present. `pack_id` optional.
 
-## AUTO‑READ
-- One fenced `auto_response` only (inventory, gaps, share_list, h_relations, v_relations, trace_map).
+## Bank Discipline
+- `docs/FOUNDATIONS/QUESTION_BANK.md` exists and rows match graph nodes (ids, tiers, status).
+- Every WHAT/HOW row has a direct WHY parent (No‑Jump).
 
-## SELECT‑ORG
-- One fenced `selection_decision`; IDs must be FROZEN in Bank.
-- Include vertical parents + typed horizontals (allowed: shares_var_with|informs|depends|conflicts|risks_with).
+## Q‑File Hygiene
+- WHAT/HOW have `shared_vars` defined (can be empty but key must exist).
+- Q‑files use **untyped** `cross_links` only.
+- Q‑files carry `assumptions[]`, `risks[]`, `context_refs[]` sections (can be empty).
 
-## GUIDANCE (pre‑PRO)
-- One fenced `pro_request`.
-- May embed `q_patch` (only FROZEN items). Ensure graph present and typed links used.
-- Include acceptance gates and require flags.
+## Graph Discipline
+- Typed edges exist only in `graph/questions.yaml`.
+- Allowed: `shares_var_with|informs|depends|conflicts|risks_with`.
+- At least one `system_scenarios` path crosses ≥2 branches.
 
-## Q‑file checks (lint‑friendly)
-- WHAT/HOW q‑files include `shared_vars: [...]` if graph references them.
-- All q‑files use untyped `cross_links: [ "<adjacent id>", ... ]` (not `cross_links_typed`).
-- Typed link semantics live only in `graph/questions.yaml`.
+## Single‑Reader & Option‑A
+- AUTO forms include `pack_id` and are one fenced YAML.
+- Echo‑Forward observed before VERIFY.
+- On bank_integrity FAIL, Operator re‑emits with AUTO’s `expected_sha`.
 
-## AUTO‑VERIFY
-- One fenced `auto_verify: PASS/FAIL` with checks: bank_integrity, no_skip, typed_cross_links (in graph), graph_completeness, system_scenario.
-
-## AUTO‑APPLY
-- One fenced `auto_apply`; envelope updated; share bundle emitted (or manual PR in connector‑limited).
-
-## PRO‑EVAL (advisory)
-- Non‑writing evaluation; proposes options/new questions (route back to GUIDANCE‑ORG).
+## Search Index
+- `dist/search_index.json` and `dist/question_matrix.csv` present and updated after q‑patches.

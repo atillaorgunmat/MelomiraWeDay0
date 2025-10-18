@@ -1,22 +1,29 @@
-# PROJECT_INSTRUCTIONS.md — v4.5.1 (Solo) + Non‑Numeric Nucleus Addendum
+# PROJECT_INSTRUCTIONS.md — v4.5.2 (Solo Variant) + Handoff Protocol
 
-> **FORM discipline:** each FORM turn outputs **one fenced YAML** with the exact top key.
-> **Thread isolation:** echo‑forward across threads (Option‑A).
+> **FORM discipline:** Each FORM turn must output **one fenced YAML** with the exact top key shown below.  
+> **Thread isolation:** Echo‑forward across threads (Option‑A below).  
+> **No numeric quotas:** GUIDANCE may *recommend* ranges, but lints do not enforce counts.
+
+## Conversation roles & handoff map (always the same loop)
+1) **AUTO‑READ** snapshots repo truth (inventory, gaps, h/v relations, trace).  
+2) **GUIDANCE‑ORG** proposes options in `question_nomination` (plus optional `nucleus_options`).  
+3) **SELECT‑ORG** chooses in `selection_decision` (may allow parallel nuclei under the capacity gate).  
+4) **GUIDANCE‑ORG** freezes chosen nodes via `pro_request` (`q_patch` writes/updates q‑files).  
+5) **AUTO** verifies (`AUTO‑VERIFY`) and applies (`AUTO‑APPLY`).  
+6) A tiny PR updates `graph/questions.yaml` with **typed horizontals**.  
+7) **AUTO‑READ** confirms the new truth.
+
+**Provenance (handoff metadata):** to keep threads self‑describing without extra prose, forms support an optional `provenance` block. Lints may ignore it; governance uses it for acceptance gates.
 
 ---
 
 ## clarifier_round (FREE → GUIDANCE‑ORG)
-
-**Purpose:** surface themes & clarifiers; **no numeric quotas**.
-
-**Notes**
-- `chain_id` optional; `pack_id` optional (legacy).
-- Clarifiers stay OPEN/PARKED until governance freezes them; q‑files may **reference** clarifier IDs in `origin.from_clarifiers` but do not copy text.
+**Purpose:** surface themes & clarifiers; no numeric quotas. Clarifiers remain OPEN/PARKED until frozen.
 
 ```yaml
 clarifier_round:
-  chain_id: <CHAIN_ID>
-  pack_id: <PACK_ID>
+  chain_id: <CHAIN_ID>             # optional (e.g., melomiraweday0)
+  pack_id: <PACK_ID>               # optional legacy (e.g., P-FND-0001)
   level: L0
   review_set: [ "...meta docs only..." ]
   context_horizon: [ { id: "...", why: "..." } ]
@@ -30,13 +37,12 @@ clarifier_round:
 ---
 
 ## question_nomination (FREE → GUIDANCE‑ORG)
-
-**Purpose:** nominate candidates and optional *nucleus options*. **No quotas**; clarity > count.
+**Purpose:** nominate candidates and, optionally, any number of *nucleus options*. No numeric caps.
 
 ```yaml
 question_nomination:
-  chain_id: <CHAIN_ID>
-  pack_id: <PACK_ID>
+  chain_id: <CHAIN_ID>         # optional
+  pack_id: <PACK_ID>           # optional
   level: L0
   review_set: [ ... ]
   candidates: [ { id: "...", title: "...", type: WHY|WHAT|HOW, coverage: 0..1,
@@ -47,9 +53,8 @@ question_nomination:
   nucleus_options:
     - id: "<label>"
       label: "<human title>"
-      why: { id: "<WHY id>", title: "<interrogative>" }
-      whats:
-        - { id: "<WHAT id>", title: "<interrogative>", depends_on: ["<WHY id>"] }
+      why:   { id: "<WHY id>",  title: "<interrogative>" }
+      whats: [ { id: "<WHAT id>", title: "<interrogative>", depends_on: ["<WHY id>"] }, ... ]
       assumptions: [ { hypothesis: "...", test: "..." }, ... ]
       horizontals_typed:
         - { a: "<id>", with: "<id>", type: informs|depends|conflicts|risks_with|shares_var_with }
@@ -58,26 +63,63 @@ question_nomination:
 
 ---
 
-## bank_ops (FREE → GUIDANCE‑ORG)
-
-**Purpose:** maintain/edit the bank table (markdown).
+## selection_decision (FREE → SELECT‑ORG)
+**Purpose:** choose the next frozen targets (supports parallel nuclei; capacity gate governs). **Typed links are intent‑only here**—they are actually wired later in `graph/questions.yaml`.
 
 ```yaml
-bank_ops:
-  chain_id: <CHAIN_ID>
-  pack_id: <PACK_ID>
-  rows_md: |
-    | id | title | tier | domain | status | depends_on | source | micro‑WWH |
-    |---|---|---|---|---|---|---|---|
+selection_decision:
+  chain_id: <CHAIN_ID>   # optional
+  pack_id: <PACK_ID>     # optional
+  chosen:
+    - id: "<FROZEN bank id>"
+      tier: WHY|WHAT|HOW
+      vertical_parents: ["<id>", "..."]   # immediate parents only; no cross‑domain jumps
+      horizontals_typed: [ { with: "<id>", type: informs|depends|conflicts|risks_with|shares_var_with } ]
+  rationale: "one line"
+  provenance:
+    nomination_ref: "<commit/pr/message id of the question_nomination this decision is based on>"
+    auto_read_ref:  "<commit sha or share‑bundle id used as the snapshot of truth>"
 ```
 
-**Bank status (docs only):** `candidate | nucleus | parked | frozen | committed`.  
-**q‑files are FROZEN‑only**.
+---
+
+## pro_request (FORM → GUIDANCE pre‑PRO) — may embed q_patch
+**Purpose:** freeze the chosen nodes by writing/updating q‑files.  
+**Rules:** typed links live only in `graph/questions.yaml`; q‑files use **untyped** `cross_links[]`. WHAT/HOW declare `shared_vars[]` when applicable. Include `origin` references—do not copy clarifier text.
+
+```yaml
+pro_request:
+  pack_id: <PACK_ID>
+  acceptance: ["Simplicity Gate","Assumption Challenge","UX Backcast","Prototype Gate",
+               "System Scenario","Coupling Watchlist","Not‑Doing","CCR‑Lite"]
+  require:
+    shared_vars: true
+    typed_cross_links: true          # means "typed links belong in graph/*, not q/*"
+    system_scenario: true
+  q_patch:
+    bank_version: "<sha of docs/FOUNDATIONS/QUESTION_BANK.md>"
+    items:
+      - id: "<FROZEN id>"
+        path: "q/<id>.yaml"
+        body: |
+          id: <id>
+          tier: WHAT|WHY|HOW
+          title: "<interrogative>"
+          depends_on: [ "<WHY id>" ]
+          shared_vars: [ value_object ]        # WHAT/HOW as needed
+          origin:
+            from_clarifiers: [C*]
+            assumptions: [A-*]                 # optional: ids from docs/ASSUMPTIONS/register.yaml
+            decisions_refs: [D-*]              # optional: ids from docs/DECISIONS/decision_log.yaml
+          cross_links: ["<adjacent id>"]       # untyped
+          status: FROZEN
+  provenance:
+    selection_ref: "<commit/pr/message id of the selection_decision>"
+```
 
 ---
 
 ## auto_response (FORM → AUTO‑READ)
-
 ```yaml
 auto_response:
   pack_id: <PACK_ID>
@@ -93,66 +135,7 @@ auto_response:
 
 ---
 
-## selection_decision (FREE → SELECT‑ORG)
-
-**Purpose:** pick next frozen targets (supports **parallel nuclei**; capacity gate in governance).
-
-```yaml
-selection_decision:
-  chain_id: <CHAIN_ID>
-  pack_id: <PACK_ID>
-  chosen:
-    - id: "<FROZEN bank id>"
-      tier: WHY|WHAT|HOW
-      vertical_parents: ["<id>", "..."]
-      horizontals_typed: [ { with: "<id>", type: informs|depends|conflicts|risks_with|shares_var_with } ]
-  rationale: "one line"
-```
-
----
-
-## pro_request (FORM → GUIDANCE pre‑PRO) — may embed q_patch
-
-**Purpose:** freeze nodes by writing/updating q‑files via `q_patch`.
-
-**Lint rules (short):**
-- **Typed links →** only `graph/questions.yaml`.
-- q‑files use **untyped** `cross_links[]`.
-- WHAT/HOW declare `shared_vars[]` when applicable.
-- Put provenance as IDs in `origin.*` (no copied text).
-
-```yaml
-pro_request:
-  pack_id: <PACK_ID>
-  acceptance: ["Simplicity Gate", "Assumption Challenge", "UX Backcast", "Prototype Gate",
-               "System Scenario", "Coupling Watchlist", "Not‑Doing", "CCR‑Lite"]
-  require:
-    shared_vars: true
-    typed_cross_links: true
-    system_scenario: true
-  q_patch:
-    bank_version: "<sha of docs/FOUNDATIONS/QUESTION_BANK.md>"
-    items:
-      - id: "<FROZEN id>"
-        path: "q/<id>.yaml"
-        body: |
-          id: <id>
-          tier: WHAT|WHY|HOW
-          title: "<interrogative>"
-          depends_on: [ "<WHY id>" ]
-          shared_vars: [ value_object ]
-          origin:
-            from_clarifiers: [C*]
-            assumptions: [A-*]
-            decisions_refs: [D-*]
-          cross_links: ["<adjacent id>"]
-          status: FROZEN
-```
-
----
-
 ## auto_verify (FORM → AUTO)
-
 ```yaml
 auto_verify:
   pack_id: <PACK_ID>
@@ -169,7 +152,6 @@ auto_verify:
 ---
 
 ## auto_apply (FORM → AUTO)
-
 ```yaml
 auto_apply:
   pack_id: <PACK_ID>
@@ -181,7 +163,6 @@ auto_apply:
 ---
 
 ## pro_eval (ADVISORY)
-
 ```yaml
 pro_eval:
   pack_id: <PACK_ID>
@@ -192,38 +173,38 @@ pro_eval:
 
 ---
 
-# Handoff & Thread‑Isolation (Option‑A)
+# Handoff & Thread‑Isolation Discipline (Option‑A)
+- **Isolated threads (Echo‑Forward)**  
+  1) In **GUIDANCE** thread: emit the `pro_request` (with any `q_patch`).  
+  2) In **AUTO** thread: paste that same YAML **verbatim**.  
+  3) Send the route line: `ROUTE → AUTO (FORM) … task=AUTO‑VERIFY`.  
+  4) If PASS, send: `ROUTE → AUTO (FORM) … task=AUTO‑APPLY`.  
+  5) Optional: `AUTO‑READ` to confirm inventory/gaps/share_list/relations/trace.
 
-1) In **GUIDANCE**: emit `pro_request` (with any `q_patch`).  
-2) In **AUTO**: paste that YAML **verbatim**.  
-3) Route: `ROUTE → AUTO (FORM) … task=AUTO‑VERIFY`.  
-4) If PASS: `ROUTE → AUTO (FORM) … task=AUTO‑APPLY`.  
-5) Optional: `AUTO‑READ` to confirm repo truth.
-
-**Sequencing:** one route per message; each FORM turn = one fenced YAML.
+- **Sequencing:** one route per message; FORM turns output **exactly one fenced YAML**.
 
 ---
 
-# Connector‑Limited Ops (Pattern B)
+# Connector‑Limited Ops Addendum (Pattern B)
 
-If AUTO can’t write to GitHub, do a short‑lived PR while keeping Single‑Reader = AUTO.
+If AUTO cannot write to GitHub, the Operator may perform **mechanical apply via PR** while preserving **Single‑Reader = AUTO**.
 
-## B1) Get `bank_version`
+## B1) Compute `bank_version` (Git blob SHA)
 ```bash
 git fetch origin
 git ls-tree origin/pack/<PACK_ID> docs/FOUNDATIONS/QUESTION_BANK.md | awk '{print $3}'
 ```
 
-## B2) Prepare a head branch
+## B2) Prepare and push a head branch
 ```bash
 git checkout -B seed/<PACK_ID>-v1 origin/pack/<PACK_ID>
 unzip -o ~/Downloads/<seed_zip>.zip -d .
 git add -A docs/FOUNDATIONS docs/TRACE docs/SCENARIOS graph q
-git commit -m "<PACK_ID>: seed/apply FROZEN nucleus"
+git commit -m "<PACK_ID>: seed/apply FROZEN nucleus (Option‑A, verified)"
 git push -u origin seed/<PACK_ID>-v1
 ```
 
-## B3) PR (head → base), then merge
+## B3) PR: head → base
 - base: `pack/<PACK_ID>`
 - head: `seed/<PACK_ID>-v1`
 
@@ -232,14 +213,14 @@ git push -u origin seed/<PACK_ID>-v1
 ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑READ (inventory,gaps,share_list,h/v relations,trace_map; no scaffold)
 ```
 
-## B5) Governed loop
-**SELECT‑ORG** → **GUIDANCE: pro_request** → **AUTO‑VERIFY** → **AUTO‑APPLY**.
+## B5) Continue governed loop
+- **SELECT‑ORG** → **GUIDANCE: pro_request** → **AUTO‑VERIFY** → **AUTO‑APPLY**.
 
 ---
 
-# Rules Recap (what lints expect)
-- Typed links **only** in `graph/questions.yaml`.
-- q‑files: **untyped** `cross_links[]`; WHAT/HOW add `shared_vars[]` when relevant.
+# Rules Recap (lint expectations)
+- Typed links **only** in `graph/questions.yaml` via `horizontals_typed`.
+- q‑files use **untyped** `cross_links[]`; WHAT/HOW declare `shared_vars[]` when applicable.
 - **No numeric quotas** on nucleus options or clarifiers.
-- q‑files are **FROZEN‑only**; bank rows use `candidate|nucleus|parked|frozen|committed`.
-- Capacity gate may allow **parallel nuclei**.
+- q‑files are **FROZEN‑only**; bank rows may use `candidate|nucleus|parked|frozen|committed`.
+- Capacity gate may allow parallel nuclei per Governance.

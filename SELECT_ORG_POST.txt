@@ -1,0 +1,14 @@
+Please return `selection_decision:` YAML only (no prose). Respect capacity (1–2 items).
+
+<paste the entire question_nomination: YAML from GUIDANCE‑ORG here>
+
+# Response shape reminder
+selection_decision:
+  chain_id: melomiraweday0
+  chosen:
+    - id: "<bank id>"
+      tier: WHY|WHAT|HOW
+      vertical_parents: ["<id>"]
+      horizontals_typed:
+        - { with: "<id>", type: informs|depends|conflicts|risks_with|shares_var_with }
+  rationale: "one line"

@@ -1,9 +1,4 @@
-# Derived question graph (fresh start)
-# Policy: typed links only here; q-files will have untyped cross_links[]
-version: "4.5.2"
-chain_id: "melomiraweday0"
+# graph/questions.yaml — fresh start (no nodes yet)
 nodes: []
-verticals: []
 horizontals_typed: []
-shared_vars: []
-system_scenarios: []
+verticals: []

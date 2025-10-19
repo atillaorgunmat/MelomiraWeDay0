@@ -1,8 +1,2 @@
-# docs/ASSUMPTIONS/register.yaml
-# Seed or extend via assumption_register_ops
-- id: A-EXAMPLE-000
-  text: "Example assumption text"
-  status: open
-  source: GUIDANCE-ORG
-  related_ids: []
-  test: "Describe how it will be tested"
+# assumption_register v1 (empty)
+assumptions: []

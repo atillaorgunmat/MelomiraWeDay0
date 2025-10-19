@@ -1,17 +1,18 @@
-# route_macros.md — v4.5.1 (Paste‑ready)
+# route_macros.md — v4.5.2 (Handoff‑Compact)
 
-- AUTO‑READ
-  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO-READ (inventory,gaps,share_list,h/v relations,trace_map; no scaffold)`
+## Paste‑ready macros (content lives in the previous message)
 
-- GUIDANCE — ask for nucleus options (no numeric quota)
-  `ROUTE → GUIDANCE (FREE) for <PACK_ID>: task=NUCLEUS-OPTIONS (chain_id=<CHAIN_ID>)`
+**To SELECT‑ORG (decision step)**  
+`ROUTE → SELECT‑ORG (FREE) for <PACK_ID>: question_nomination posted (see previous message)`
 
-- SELECT‑ORG — choose next frozen targets (supports parallel nuclei)
-  `ROUTE → SELECT-ORG (FREE) for <PACK_ID>`
+**To GUIDANCE (pre‑PRO)**  
+`ROUTE → GUIDANCE (FORM) for <PACK_ID>: selection_decision posted (see previous message)`
 
-- GUIDANCE — pre‑PRO freeze request (may embed q_patch)
-  `ROUTE → GUIDANCE (FORM) for <PACK_ID>: pre‑PRO pro_request (may include q_patch)`
+**To AUTO — verify**  
+`ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑VERIFY`
 
-- AUTO — verify then apply
-  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO-VERIFY`
-  `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO-APPLY`
+**To AUTO — apply (Operator PR)**  
+`ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑APPLY (Operator PR)`
+
+**To AUTO — read**  
+`ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑READ (inventory,gaps,share_list,h/v relations,trace_map; no scaffold)`

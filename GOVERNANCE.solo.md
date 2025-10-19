@@ -1,70 +1,39 @@
-# GOVERNANCE.solo.md — v4.5.2-mini
+# GOVERNANCE.solo.md — v4.5.2 (Handoff‑Compact)
 
-**Goal:** keep the loop tight, objective, and auditable. This file defines roles, gates, pins, and enforcement.
+**Roles**
+- **Operator**: routes, echo‑forwards YAML, runs PRs (Pattern‑B), never authors content.  
+- **GUIDANCE‑ORG**: produces `clarifier_round`, `question_nomination`, and `pro_request`.  
+- **SELECT‑ORG**: produces `selection_decision` (no prose).  
+- **AUTO**: produces `auto_verify`, `auto_apply` (ledger), and `auto_response` (reader).
 
----
+**Principles**
+- **Single‑Reader**: only AUTO reads the repo. Others consume `share_list` + pasted context.  
+- **Echo‑Forward Discipline**: paste prior YAML verbatim; then send the route macro.  
+- **No Numeric Quotas**: coverage is qualitative; capacity gating decides parallelism.  
+- **Typed Links in Graph**: all typed horizontals live in `graph/questions.yaml`. q‑files use untyped `cross_links[]`.  
+- **FROZEN‑only q‑files**: bank status may vary, but q‑files commit only when FROZEN.  
+- **Provenance**: q‑files use `origin` to reference clarifiers/assumptions/decisions (IDs only).
 
-## Roles
-- **GUIDANCE‑ORG (FREE):** explore, structure, and nominate (`clarifier_round`, `question_nomination`, `bank_ops`). No merges.
-- **SELECT‑ORG (FREE):** decide *which* nominated nodes move next → emit **`selection_decision`** with pins. No debates.
-- **GUIDANCE (pre‑PRO, FORM):** turn selections into **`pro_request`** with `q_patch` (FROZEN q‑files).
-- **AUTO (FORM):** single reader/enforcer → `AUTO‑VERIFY` then `AUTO‑APPLY` and optional `AUTO‑READ`.
-- **Operator:** runs zsh‑safe PRs when connectors can’t write. Does not change content.
+**Capacity Gate**
+- Default allows **up to 2 parallel nuclei** when weekly capacity ≥ 1 FROZEN node. SELECT‑ORG enforces this.
 
----
+**Decision & Assumption Registers**
+- `docs/DECISIONS/decision_log.yaml` and `docs/ASSUMPTIONS/register.yaml` hold entries with IDs (D‑*, A‑*).  
+- Each `pro_request.q_patch.items[*].body.origin` may reference these IDs.
 
-## Pins & Provenance (required in `selection_decision`)
-- `bank_version`: blob SHA of `docs/FOUNDATIONS/QUESTION_BANK.md` on base.
-- `auto_read_sha`: the commit used for the last `AUTO‑READ`.
-- `nomination_ref`: repo path that stores the nomination/clarifier YAML you reference.
+**Freeze Windows & Reopen Triggers**
+- Freeze after `auto_apply.applied: true`. Reopen only via documented triggers (safety incident, dependency change, KPI invalidation).
 
-**How to get them:**
-```bash
-git fetch origin
-git ls-tree origin/pack/<PACK_ID> docs/FOUNDATIONS/QUESTION_BANK.md | awk '{print $3}'  # bank_version
-# auto_read_sha: copy from your last AUTO-READ console (the commit shown)
-# nomination_ref: path of the YAML checked into docs/GUIDANCE/... or similar
-```
+**Pattern‑B (Connector‑limited)**
+1) AUTO → `auto_verify` PASS.  
+2) Operator raises PR.  
+3) On merge, Operator posts `auto_apply` with `mode: operator` and the merge SHA.  
+4) AUTO may follow with `auto_response` for confirmation.
 
-Store pins in the envelope (optional) and repeat them in `selection_decision` for traceability.
+**SELECT‑ORG Decision Heuristics**
+- Prefer nuclei that (a) unblock measurement/KPIs, (b) reduce legal risk, or (c) validate right‑to‑win.  
+- Maintain vertical completeness (WHY→WHAT) and register required typed horizontals for the graph.
 
----
-
-## Acceptance Gates (checked before `q_patch` is accepted)
-- **Simplicity Gate:** each node is one clear question; no bundles.
-- **Assumption Challenge:** key assumptions listed + test ideas exist.
-- **UX Backcast:** what the user/stakeholder sees at success.
-- **Prototype Gate:** minimal artifact or sample path is plausible.
-- **System Scenario:** the chosen nodes can be walked end‑to‑end.
-- **Coupling Watchlist:** risky coupling documented.
-- **Not‑Doing:** explicit out‑of‑scope statement.
-- **CCR‑Lite:** copy/compliance review for wording and claims.
-
----
-
-## Policy
-- **Typed links live only in `graph/questions.yaml`.**  
-  q‑files carry **untyped** `cross_links[]`.  
-  WHAT/HOW declare `shared_vars[]` when they share a value object.
-- **q‑files are FROZEN‑only.** Bank rows carry other states.
-- **No‑Skip:** any WHAT/HOW must have a direct WHY parent.
-- **Freeze windows:** changes outside weekly window require reopening with reason.
-- **Capacity gate:** default 1 nucleus in flight; may allow 2 when non‑contending (document why).
-- **Decision & Assumption registers:** use `docs/DECISIONS/*` and `docs/ASSUMPTIONS/register.yaml`; reference IDs in `origin.*` inside q‑files.
-- **Single‑Reader AUTO:** AUTO remains the only reader for repo truth; operator PRs keep that invariant.
-
----
-
-## Enforcement & Lints
-- `tools/validate_question_chain.py`: graph completeness, no‑skip, typed‑link boundaries, shared_vars.
-- `tools/build_question_index.py`: builds a search index for GUIDANCE use.
-- CI or local scripts can run: `scripts/run_index_build.sh` and a lints runner.
-
----
-
-## Router Discipline (Echo‑Forward)
-- Each thread carries **one FORM** and a **route line** when handing off. Example:
-  - `ROUTE → SELECT‑ORG (FREE) for <PACK_ID>` with a `selection_decision` YAML.
-  - `ROUTE → GUIDANCE (FORM) for <PACK_ID>: pro_request`
-  - `ROUTE → AUTO (FORM) for <PACK_ID>: task=AUTO‑VERIFY` then `AUTO‑APPLY`.
-- SELECT‑ORG does **not** debate content; it decides and pins.
+**Audit Cheatsheet**
+- `scripts/run_index_build.sh` for search index.  
+- `tools/validate_question_chain.py` for typed‑link and no‑skip checks.

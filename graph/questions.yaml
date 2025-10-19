@@ -1,49 +1,9 @@
-pack: P-FND-0001
-version: 1
-nodes:
-  - { id: UNK-BIZ-00, tier: WHY,  status: FROZEN }
-  - { id: UNK-LGL-00, tier: WHY,  status: FROZEN }
-  - { id: UNK-CHN-00, tier: WHY,  status: FROZEN }
-  - { id: UNK-OPS-00, tier: WHY,  status: FROZEN }
-  - { id: UNK-ICP-00, tier: WHY,  status: FROZEN }
-  - { id: UNK-BIZ-01, tier: WHAT, status: FROZEN }
-  - { id: UNK-LGL-01, tier: WHAT, status: FROZEN }
-  - { id: UNK-LGL-REDLIST-01, tier: WHAT, status: FROZEN }
-  - { id: UNK-CHN-01, tier: WHAT, status: FROZEN }
-  - { id: UNK-OPS-02, tier: WHAT, status: FROZEN }
-  - { id: UNK-OPS-CAP-01, tier: WHAT, status: FROZEN }
-  - { id: UNK-ICP-01, tier: WHAT, status: FROZEN }
-
-edges:
-  vertical:
-    - { from: UNK-BIZ-01,         to: UNK-BIZ-00,        rel: depends_on }
-    - { from: UNK-LGL-01,         to: UNK-LGL-00,        rel: depends_on }
-    - { from: UNK-LGL-REDLIST-01, to: UNK-LGL-00,        rel: depends_on }
-    - { from: UNK-CHN-01,         to: UNK-CHN-00,        rel: depends_on }
-    - { from: UNK-OPS-02,         to: UNK-OPS-00,        rel: depends_on }
-    - { from: UNK-OPS-CAP-01,     to: UNK-OPS-00,        rel: depends_on }
-    - { from: UNK-ICP-01,         to: UNK-ICP-00,        rel: depends_on }
-  horizontals_typed:
-    - { from: UNK-LGL-REDLIST-01, to: UNK-LGL-01,   rel: depends }
-    - { from: UNK-CHN-01,         to: UNK-OPS-02,   rel: informs }
-    - { from: UNK-OPS-CAP-01,     to: UNK-OPS-02,   rel: shares_var_with }
-    - { from: UNK-ICP-01,         to: UNK-CHN-01,   rel: informs }
-
-shared_vars:
-  capacity_slots: [UNK-OPS-02, UNK-OPS-CAP-01]
-  cadence_plan:   [UNK-CHN-01, UNK-OPS-02]
-  icp_profiles:   [UNK-ICP-01, UNK-CHN-01]
-  kpi_primary:    [UNK-BIZ-01]
-  legal_baseline_policy: [UNK-LGL-01, UNK-LGL-REDLIST-01]
-
-system_scenarios:
-  - id: SCN-P-FND-0001-001
-    title: "First‑cycle sponsor flow"
-    path:
-      - UNK-ICP-01
-      - UNK-LGL-01
-      - UNK-LGL-REDLIST-01
-      - UNK-CHN-01
-      - UNK-OPS-02
-      - UNK-OPS-CAP-01
-      - UNK-BIZ-01
+# Derived question graph (fresh start)
+# Policy: typed links only here; q-files will have untyped cross_links[]
+version: "4.5.2"
+chain_id: "melomiraweday0"
+nodes: []
+verticals: []
+horizontals_typed: []
+shared_vars: []
+system_scenarios: []

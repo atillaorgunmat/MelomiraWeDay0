@@ -1,0 +1,7 @@
+# ROUTE lines (copy/paste)
+ROUTE → AUTO (FORM) for P-FND-0001: task=AUTO‑READ (inventory,gaps,share_list,h/v relations,trace_map; no scaffold)
+ROUTE → GUIDANCE (FREE) for P-FND-0001: question_nomination (fresh nucleus options; no numeric caps)
+ROUTE → SELECT-ORG (FREE) for P-FND-0001
+ROUTE → GUIDANCE (FORM) for P-FND-0001: pre‑PRO pro_request (may include q_patch)
+ROUTE → AUTO (FORM) for P-FND-0001: task=AUTO‑VERIFY
+ROUTE → AUTO (FORM) for P-FND-0001: task=AUTO‑APPLY

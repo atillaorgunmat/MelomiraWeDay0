@@ -1,0 +1,7 @@
+GUIDANCE-ORG — NUCLEUS OPTIONS (fresh evaluation)
+Propose ≥1 distinct nucleus options for chain_id=melomiraweday0. For each option include:
+- WHY (one) and WHATs (1–2) with direct depends_on
+- List of assumptions with suggested tests
+- suggested typed horizontals among the WHATs (for graph)
+- a cross-branch system scenario using those nodes
+Do not freeze. Keep options distinct.

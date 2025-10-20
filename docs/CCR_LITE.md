@@ -1,1 +1,2 @@
 - 2025-10-19: Seeded nuclei, added typed links, scenario, assumptions, prototypes, and governance scaffolds (D-SEL-2025-10-19).
+- 2025-10-20: Parity + cadence patch (commit a7c1e3f). Added typed horizontals to 5/5, A-LGL-002, and clarified automation_scope cadence.

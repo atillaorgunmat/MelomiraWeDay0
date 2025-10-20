@@ -1,0 +1,3 @@
+- No multi‑market ICP expansion in P‑FND.
+- No Level‑2 autonomous flows; keep AI assistive.
+- No bespoke policy authoring per customer in foundation phase.

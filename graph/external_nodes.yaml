@@ -1,0 +1,3 @@
+externals:
+  - { id: "UNK-ICP-01", label: "Ideal Customer Profile", notes: "Maintained outside this pack; referenced for targeting/validation." }
+  - { id: "UNK-AUTO-SCOPE-01", label: "Automation Scope (v1)", notes: "Maintained outside this pack; referenced for policy enablement." }

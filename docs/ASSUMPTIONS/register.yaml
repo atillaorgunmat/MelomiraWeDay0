@@ -1,2 +1,8 @@
-# assumption_register v1 (empty)
-assumptions: []
+assumptions:
+  - { id: A-VAL-001, node: UNK-IND-VAL-00, text: "One hard KPI can validate ≤4 weeks.", falsify_by: "No meaningful lift within 4 weeks under controlled exposure." }
+  - { id: A-VAL-002, node: UNK-IND-VAL-00, text: "Value hinges on access & enablement, not bespoke features.", falsify_by: "Lift only with bespoke features/services." }
+  - { id: A-KPI-001, node: UNK-BIZ-01, text: "Single early-stage KPI beats composites on predictive validity.", falsify_by: "Composite wins in parallel A/B." }
+  - { id: A-KPI-002, node: UNK-BIZ-01, text: "KPI data exists in CRM/telemetry with minimal ETL.", falsify_by: "Gaps/quality require new pipelines." }
+  - { id: A-PLCY-001, node: UNK-IND-AIACC-00, text: "Standard artifacts unlock >80% of workflows.", falsify_by: ">20% need bespoke terms." }
+  - { id: A-PLCY-002, node: UNK-IND-AIACC-00, text: "We can constrain scope within risk tolerance.", falsify_by: "Incidents exceed thresholds despite narrowed scope." }
+  - { id: A-LGL-001, node: UNK-LGL-01, text: "Counsel can approve standard artifacts in ≤2 weeks.", falsify_by: "Bespoke terms or >2 weeks review." }

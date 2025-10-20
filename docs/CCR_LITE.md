@@ -1,0 +1,1 @@
+- 2025-10-19: Seeded nuclei, added typed links, scenario, assumptions, prototypes, and governance scaffolds (D-SEL-2025-10-19).

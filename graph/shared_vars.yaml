@@ -1,0 +1,6 @@
+shared_vars:
+  - { id: north_star_kpi, owner: "BizOps", source: "CRM + product telemetry", unit: "count_per_week", cadence: "daily ingest, weekly review", definition: "Qualified deals started/week attributable to AI-enabled flow" }
+  - { id: deal_stage_definitions, owner: "SalesOps", source: "CRM", unit: "enum", cadence: "quarterly governance", definition: "Early-stage markers (e.g., MQL→SQL, SQL→Discovery)" }
+  - { id: icp_profile, owner: "Marketing", source: "Data warehouse", unit: "profile", cadence: "monthly", definition: "Firmographic & workflow traits of target accounts/users" }
+  - { id: ai_risk_register, owner: "Legal/Risk", source: "Risk log", unit: "issue_list", cadence: "weekly", definition: "Open risks, severities, mitigations for AI usage" }
+  - { id: automation_scope, owner: "Product", source: "Design docs", unit: "scope", cadence: "biweekly", definition: "Allowed tasks/intents, disallowed tasks, guardrails" }

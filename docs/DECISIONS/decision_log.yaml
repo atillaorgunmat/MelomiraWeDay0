@@ -1,3 +1,2 @@
-# docs/DECISIONS/decision_log.yaml
-# Append entries using decision_log_ops
-entries: []
+decisions:
+  - { id: D-SEL-2025-10-19, date: 2025-10-19, title: "Freeze two nuclei: Deals/KPI and Safety/Policy", rationale: "Unblock measurement and reduce legal risk in parallel.", affects: [UNK-IND-VAL-00, UNK-BIZ-01, UNK-IND-AIACC-00, UNK-LGL-01], links: [] }

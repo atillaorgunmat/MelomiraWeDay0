@@ -6,3 +6,6 @@ assumptions:
   - { id: A-PLCY-001, node: UNK-IND-AIACC-00, text: "Standard artifacts unlock >80% of workflows.", falsify_by: ">20% need bespoke terms." }
   - { id: A-PLCY-002, node: UNK-IND-AIACC-00, text: "We can constrain scope within risk tolerance.", falsify_by: "Incidents exceed thresholds despite narrowed scope." }
   - { id: A-LGL-001, node: UNK-LGL-01, text: "Counsel can approve standard artifacts in ≤2 weeks.", falsify_by: "Bespoke terms or >2 weeks review." }
+  - { id: A-LGL-002, node: UNK-LGL-01,
+      text: "Standard artifacts remain acceptable across major regulator/processor combinations.",
+      falsify_by: "Any major target requires atypical clauses or supervisory notice before use." }

@@ -2,3 +2,5 @@ horizontals_typed:
   - { a: "UNK-IND-VAL-00", with: "UNK-IND-AIACC-00", type: "risks_with" }
   - { a: "UNK-BIZ-01",     with: "UNK-ICP-01",      type: "shares_var_with" }
   - { a: "UNK-LGL-01",     with: "UNK-AUTO-SCOPE-01", type: "informs" }
+  - { a: "UNK-IND-VAL-00", with: "UNK-ICP-01", type: "informs" }
+  - { a: "UNK-IND-AIACC-00", with: "UNK-AUTO-SCOPE-01", type: "informs" }

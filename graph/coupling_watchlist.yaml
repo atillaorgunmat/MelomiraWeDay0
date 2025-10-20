@@ -1,0 +1,4 @@
+watchlist:
+  - { a: UNK-IND-VAL-00, b: UNK-IND-AIACC-00, concern: "Value thesis may be constrained by policy/AI-access.", risk_type: "policy_constraint", owner: "Legal/Risk" }
+  - { a: UNK-IND-VAL-00, b: "UNK-ICP-01", concern: "ICP definition can overfit value claim.", risk_type: "model_overfit", owner: "Marketing", external: true }
+  - { a: UNK-IND-AIACC-00, b: "UNK-AUTO-SCOPE-01", concern: "Automation scope may outpace compliance.", risk_type: "scope_drift", owner: "Product", external: true }
